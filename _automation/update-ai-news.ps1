@@ -59,7 +59,7 @@ if (-not (Test-Path $PromptFile)) { Log "ERROR: prompt file not found: $PromptFi
 Log "Using Claude binary: $ClaudeExe"
 
 # --- 1. Generate the newsletter ---------------------------------------------
-$Prompt = Get-Content -Raw -Path $PromptFile
+$Prompt = Get-Content -Raw -Path $PromptFile -Encoding UTF8
 Push-Location $NewsDir
 try {
     Log "Launching Claude (headless) to write this week's issue..."
@@ -144,7 +144,7 @@ else { Log "GitHub publish disabled (skipping)." }
 if ($cfg -and $cfg.email -and $cfg.email.enabled) {
     try {
         $em   = $cfg.email
-        $md   = Get-Content -Raw -Path $IssueFile
+        $md   = Get-Content -Raw -Path $IssueFile -Encoding UTF8
         $html = Convert-MarkdownToHtml $md
         # Subject = first "# ..." heading, cleaned of emoji/#.
         $subject = "The AI Brief - $today"
