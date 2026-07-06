@@ -85,7 +85,7 @@ if (-not (Test-Path $IssueFile)) {
 Log "This week's issue: $IssueFile"
 
 # --- Minimal Markdown -> HTML (covers our newsletter syntax) ------------------
-function Convert-MarkdownToHtml([string]$md) {
+function Convert-MarkdownToHtml([string]$md, [string]$navHtml = '') {
     # Cyber-dark theme, all styles inline (email clients strip <style> blocks).
     $sP  = 'color:#c9d6ee;margin:10px 0;'
     $sLi = 'color:#c9d6ee;margin:6px 0;'
@@ -123,6 +123,7 @@ function Convert-MarkdownToHtml([string]$md) {
 <tr><td><img src="cid:banner" width="680" alt="THE AI BRIEF" style="display:block;width:100%;height:auto;"></td></tr>
 <tr><td style="padding:10px 28px 28px;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.6;">
 $body
+$navHtml
 </td></tr>
 </table>
 <p style="color:#3d4a6b;font-family:Consolas,monospace;font-size:11px;margin-top:14px;">&#9889; generated automatically &middot; delivered daily</p>
@@ -169,7 +170,32 @@ if ($cfg -and $cfg.email -and $cfg.email.enabled) {
     try {
         $em   = $cfg.email
         $md   = Get-Content -Raw -Path $IssueFile -Encoding UTF8
-        $html = Convert-MarkdownToHtml $md
+
+        # Strip the markdown nav footer (email gets real buttons instead).
+        $md = ($md -split "`r?`n" | Where-Object { $_ -notmatch 'Previous issue\]|Next issue\]|All issues\]' }) -join "`n"
+
+        # Build prev/next buttons linking to the GitHub archive.
+        $navHtml = ''
+        if ($cfg.github -and $cfg.github.username -and $cfg.github.repo) {
+            $repoBase = "https://github.com/$($cfg.github.username)/$($cfg.github.repo)/blob/main"
+            $issues = Get-ChildItem $NewsDir -Filter '*-ai-news.md' | Sort-Object Name
+            $idx = [array]::IndexOf(($issues.Name), (Split-Path -Leaf $IssueFile))
+            $btnOn  = 'display:inline-block;padding:10px 18px;border:1px solid #38e1ff;border-radius:8px;color:#38e1ff;text-decoration:none;font-family:Consolas,monospace;font-size:13px;background:#0d1526;'
+            $btnDim = 'display:inline-block;padding:10px 18px;border:1px solid #3d4a6b;border-radius:8px;color:#7f8db0;text-decoration:none;font-family:Consolas,monospace;font-size:13px;background:#0d1526;'
+            $cells = ''
+            if ($idx -gt 0) {
+                $prev = $issues[$idx - 1].Name
+                $cells += "<td style=""padding:0 5px;""><a href=""$repoBase/$prev"" style=""$btnOn"">&#8592; Previous issue</a></td>"
+            }
+            $cells += "<td style=""padding:0 5px;""><a href=""https://github.com/$($cfg.github.username)/$($cfg.github.repo)"" style=""$btnDim"">&#128218; All issues</a></td>"
+            if ($idx -ge 0 -and $idx -lt ($issues.Count - 1)) {
+                $next = $issues[$idx + 1].Name
+                $cells += "<td style=""padding:0 5px;""><a href=""$repoBase/$next"" style=""$btnOn"">Next issue &#8594;</a></td>"
+            }
+            $navHtml = "<table role=""presentation"" cellpadding=""0"" cellspacing=""0"" align=""center"" style=""margin:22px auto 4px;""><tr>$cells</tr></table>"
+        }
+
+        $html = Convert-MarkdownToHtml $md $navHtml
         # Subject = first "# ..." heading, cleaned of emoji/#.
         $subject = "The AI Brief - $today"
         $firstH1 = ($md -split "`r?`n" | Where-Object { $_ -match '^# ' } | Select-Object -First 1)

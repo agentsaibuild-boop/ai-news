@@ -92,12 +92,29 @@ Follow these steps exactly:
    - Avoid repeating stories that already appeared in yesterday's issue unless
      there is a genuine new development.
 
-4. Update `README.md` in this folder: add a link to the new issue at the TOP of
+4. NAVIGATION FOOTER — the very last lines of the new issue file MUST be:
+
+   ```
+   ---
+
+   **[← Previous issue](<PREV-FILENAME>)** · **[📚 All issues](README.md)**
+   ```
+
+   where <PREV-FILENAME> is the most recent older `*-ai-news.md` file in the
+   folder (sorted by filename). If there is no older issue, output only the
+   All-issues link. Never link to a file that does not exist.
+
+   THEN update the PREVIOUS issue's footer: open that previous file and extend
+   its final navigation line with ` · **[Next issue →](<ISSUE-DATE>-ai-news.md)**`
+   so readers can page forward through the archive. Do not duplicate the link if
+   it is already there.
+
+5. Update `README.md` in this folder: add a link to the new issue at the TOP of
    the "Latest issues" list, in the form
    `- [<Month D, YYYY> — Issue No. <N>](<ISSUE-DATE>-ai-news.md)`.
    Keep all prior links.
 
-5. If a file for today's date already exists, overwrite it with the fresh version
+6. If a file for today's date already exists, overwrite it with the fresh version
    rather than creating a duplicate.
 
 Do not ask for confirmation — complete the whole task autonomously and finish by
