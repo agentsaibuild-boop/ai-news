@@ -86,30 +86,47 @@ Log "This week's issue: $IssueFile"
 
 # --- Minimal Markdown -> HTML (covers our newsletter syntax) ------------------
 function Convert-MarkdownToHtml([string]$md) {
+    # Cyber-dark theme, all styles inline (email clients strip <style> blocks).
+    $sP  = 'color:#c9d6ee;margin:10px 0;'
+    $sLi = 'color:#c9d6ee;margin:6px 0;'
+    $sH1 = 'color:#eaf6ff;font-size:22px;margin:16px 0 4px;'
+    $sH2 = 'color:#38e1ff;font-size:18px;margin:24px 0 8px;border-bottom:1px solid #1c2a4a;padding-bottom:6px;'
+    $sH3 = 'color:#7f8db0;font-size:14px;font-weight:normal;letter-spacing:2px;margin:0 0 12px;'
+    $sBq = 'border-left:3px solid #a569ff;padding:10px 14px;color:#dbe6ff;background:#121a30;margin:14px 0;border-radius:0 8px 8px 0;'
+    $sHr = 'border:none;border-top:1px solid #1c2a4a;margin:18px 0;'
+
     $out = New-Object System.Text.StringBuilder
     $inList = $false
     foreach ($raw in ($md -split "`r?`n")) {
         $line = $raw
         # inline: links, then bold, then italic
-        $line = [regex]::Replace($line, '\[([^\]]+)\]\(([^)]+)\)', '<a href="$2">$1</a>')
-        $line = [regex]::Replace($line, '\*\*([^*]+)\*\*', '<strong>$1</strong>')
+        $line = [regex]::Replace($line, '\[([^\]]+)\]\(([^)]+)\)', '<a href="$2" style="color:#4fd8ff;">$1</a>')
+        $line = [regex]::Replace($line, '\*\*([^*]+)\*\*', '<strong style="color:#ffffff;">$1</strong>')
         $line = [regex]::Replace($line, '(?<!\*)\*([^*]+)\*(?!\*)', '<em>$1</em>')
 
-        if     ($line -match '^\s*---\s*$')   { if($inList){[void]$out.Append('</ul>');$inList=$false}; [void]$out.Append('<hr>') }
-        elseif ($line -match '^### (.*)')     { if($inList){[void]$out.Append('</ul>');$inList=$false}; [void]$out.Append("<h3>$($matches[1])</h3>") }
-        elseif ($line -match '^## (.*)')      { if($inList){[void]$out.Append('</ul>');$inList=$false}; [void]$out.Append("<h2>$($matches[1])</h2>") }
-        elseif ($line -match '^# (.*)')       { if($inList){[void]$out.Append('</ul>');$inList=$false}; [void]$out.Append("<h1>$($matches[1])</h1>") }
-        elseif ($line -match '^> (.*)')       { if($inList){[void]$out.Append('</ul>');$inList=$false}; [void]$out.Append("<blockquote>$($matches[1])</blockquote>") }
-        elseif ($line -match '^\s*[-*] (.*)') { if(-not $inList){[void]$out.Append('<ul>');$inList=$true}; [void]$out.Append("<li>$($matches[1])</li>") }
+        if     ($line -match '^\s*---\s*$')   { if($inList){[void]$out.Append('</ul>');$inList=$false}; [void]$out.Append("<hr style=""$sHr"">") }
+        elseif ($line -match '^### (.*)')     { if($inList){[void]$out.Append('</ul>');$inList=$false}; [void]$out.Append("<h3 style=""$sH3"">$($matches[1])</h3>") }
+        elseif ($line -match '^## (.*)')      { if($inList){[void]$out.Append('</ul>');$inList=$false}; [void]$out.Append("<h2 style=""$sH2"">$($matches[1])</h2>") }
+        elseif ($line -match '^# (.*)')       { if($inList){[void]$out.Append('</ul>');$inList=$false}; [void]$out.Append("<h1 style=""$sH1"">$($matches[1])</h1>") }
+        elseif ($line -match '^> (.*)')       { if($inList){[void]$out.Append('</ul>');$inList=$false}; [void]$out.Append("<blockquote style=""$sBq"">$($matches[1])</blockquote>") }
+        elseif ($line -match '^\s*[-*] (.*)') { if(-not $inList){[void]$out.Append('<ul style="padding-left:22px;margin:8px 0;">');$inList=$true}; [void]$out.Append("<li style=""$sLi"">$($matches[1])</li>") }
         elseif ($line.Trim() -eq '')          { if($inList){[void]$out.Append('</ul>');$inList=$false} }
-        else                                   { if($inList){[void]$out.Append('</ul>');$inList=$false}; [void]$out.Append("<p>$line</p>") }
+        else                                   { if($inList){[void]$out.Append('</ul>');$inList=$false}; [void]$out.Append("<p style=""$sP"">$line</p>") }
     }
     if ($inList) { [void]$out.Append('</ul>') }
     $body = $out.ToString()
     return @"
 <!doctype html><html><head><meta charset="utf-8"></head>
-<body style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.55;color:#1a1a1a;max-width:680px;margin:0 auto;padding:16px;">
+<body style="margin:0;padding:0;background-color:#04060d;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#04060d;"><tr><td align="center" style="padding:24px 12px;">
+<table role="presentation" width="680" cellpadding="0" cellspacing="0" style="max-width:680px;width:100%;background-color:#0b1120;border:1px solid #1c2a4a;border-radius:12px;overflow:hidden;">
+<tr><td><img src="cid:banner" width="680" alt="THE AI BRIEF" style="display:block;width:100%;height:auto;"></td></tr>
+<tr><td style="padding:10px 28px 28px;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.6;">
 $body
+</td></tr>
+</table>
+<p style="color:#3d4a6b;font-family:Consolas,monospace;font-size:11px;margin-top:14px;">&#9889; generated automatically &middot; delivered daily</p>
+</td></tr></table>
 </body></html>
 "@
 }
@@ -158,12 +175,33 @@ if ($cfg -and $cfg.email -and $cfg.email.enabled) {
         $firstH1 = ($md -split "`r?`n" | Where-Object { $_ -match '^# ' } | Select-Object -First 1)
         if ($firstH1) { $subject = ($firstH1 -replace '^#\s*','').Trim() }
 
-        $sec  = ConvertTo-SecureString $em.appPassword -AsPlainText -Force
-        $cred = New-Object System.Management.Automation.PSCredential($em.from, $sec)
+        # Ensure the header banner exists (regenerate if missing).
+        $BannerFile = Join-Path $ScriptDir 'banner.png'
+        if (-not (Test-Path $BannerFile)) {
+            $genScript = Join-Path $ScriptDir 'generate-banner.ps1'
+            if (Test-Path $genScript) { & powershell -NoProfile -ExecutionPolicy Bypass -File $genScript | Out-Null }
+        }
+
+        $msg = New-Object System.Net.Mail.MailMessage
+        $msg.From = New-Object System.Net.Mail.MailAddress($em.from, 'The AI Brief')
+        $msg.To.Add($em.to)
+        $msg.Subject = $subject
+        $msg.SubjectEncoding = [System.Text.Encoding]::UTF8
+
+        $view = [System.Net.Mail.AlternateView]::CreateAlternateViewFromString($html, [System.Text.Encoding]::UTF8, 'text/html')
+        if (Test-Path $BannerFile) {
+            $banner = New-Object System.Net.Mail.LinkedResource($BannerFile, 'image/png')
+            $banner.ContentId = 'banner'
+            $view.LinkedResources.Add($banner)
+        }
+        $msg.AlternateViews.Add($view)
+
+        $smtp = New-Object System.Net.Mail.SmtpClient('smtp.gmail.com', 587)
+        $smtp.EnableSsl = $true
+        $smtp.Credentials = New-Object System.Net.NetworkCredential($em.from, $em.appPassword)
         Log "Sending email to $($em.to) ..."
-        Send-MailMessage -From $em.from -To $em.to -Subject $subject `
-            -BodyAsHtml -Body $html -SmtpServer 'smtp.gmail.com' -Port 587 -UseSsl `
-            -Credential $cred -Encoding ([System.Text.Encoding]::UTF8)
+        $smtp.Send($msg)
+        $msg.Dispose(); $smtp.Dispose()
         Log "Email sent."
     }
     catch { Log "ERROR sending email: $_" }
