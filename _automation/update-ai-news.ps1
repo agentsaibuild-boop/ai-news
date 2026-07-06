@@ -40,6 +40,45 @@ if (Test-Path $ConfigFile) {
     catch { Log "WARNING: could not parse config.local.json: $_" }
 }
 
+# --- Failure tracking & alert email -------------------------------------------
+$script:Failures = @()
+function Add-Failure([string]$msg) { Log "ERROR: $msg"; $script:Failures += $msg }
+
+function Send-AlertEmail {
+    # Plain, no-frills alert so it works even when the fancy path is broken.
+    if (-not ($cfg -and $cfg.email -and $cfg.email.enabled)) { Log "Alert wanted but email not configured."; return }
+    try {
+        $tail = (Get-Content $LogFile -Tail 25 -ErrorAction SilentlyContinue) -join "`n"
+        $body = @"
+The AI Brief daily run hit a problem on $(Get-Date -Format 'yyyy-MM-dd HH:mm').
+
+WHAT FAILED:
+$($script:Failures | ForEach-Object { " - $_" } | Out-String)
+COMMON FIXES:
+ - Claude logged out  -> open Claude Code once and sign in
+ - GitHub push failed -> token may be expired; make a new one and update _automation\config.local.json
+ - Email failed       -> app password may be revoked; generate a new one
+
+LAST LOG LINES:
+$tail
+
+Log file: $LogFile
+"@
+        $msg = New-Object System.Net.Mail.MailMessage
+        $msg.From = New-Object System.Net.Mail.MailAddress($cfg.email.from, 'The AI Brief - ALERT')
+        $msg.To.Add($cfg.email.to)
+        $msg.Subject = "!! The AI Brief - daily run FAILED ($(Get-Date -Format 'yyyy-MM-dd'))"
+        $msg.Body = $body
+        $smtp = New-Object System.Net.Mail.SmtpClient('smtp.gmail.com', 587)
+        $smtp.EnableSsl = $true
+        $smtp.Credentials = New-Object System.Net.NetworkCredential($cfg.email.from, $cfg.email.appPassword)
+        $smtp.Send($msg)
+        $msg.Dispose(); $smtp.Dispose()
+        Log "Alert email sent."
+    }
+    catch { Log "Could not send alert email either: $_" }
+}
+
 # --- Locate the newest claude.exe (survives app updates) ---------------------
 $searchRoots = @(
     (Join-Path $env:LOCALAPPDATA 'Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\Claude\claude-code'),
@@ -54,8 +93,8 @@ $onPath = Get-Command claude.exe -ErrorAction SilentlyContinue
 if ($onPath) { $candidates += Get-Item $onPath.Source }
 
 $ClaudeExe = $candidates | Sort-Object LastWriteTime -Descending | Select-Object -First 1 -ExpandProperty FullName
-if (-not $ClaudeExe)          { Log "ERROR: could not locate claude.exe. Aborting."; exit 1 }
-if (-not (Test-Path $PromptFile)) { Log "ERROR: prompt file not found: $PromptFile. Aborting."; exit 1 }
+if (-not $ClaudeExe)          { Add-Failure "Could not locate claude.exe (was Claude Code uninstalled or moved?)"; Send-AlertEmail; exit 1 }
+if (-not (Test-Path $PromptFile)) { Add-Failure "Prompt file not found: $PromptFile"; Send-AlertEmail; exit 1 }
 Log "Using Claude binary: $ClaudeExe"
 
 # --- 1. Generate the newsletter ---------------------------------------------
@@ -73,7 +112,11 @@ try {
 catch { Log "ERROR while running Claude: $_"; $genCode = 1 }
 finally { Pop-Location }
 
-if ($genCode -ne 0) { Log "Generation failed; skipping publish/email."; exit $genCode }
+if ($genCode -ne 0) {
+    Add-Failure "Newsletter generation failed (Claude exit code $genCode). Most common cause: Claude Code login expired."
+    Send-AlertEmail
+    exit $genCode
+}
 
 # Find the issue file for today (what Claude just wrote).
 $today     = Get-Date -Format 'yyyy-MM-dd'
@@ -140,6 +183,11 @@ if ($cfg -and $cfg.github -and $cfg.github.enabled) {
         $ErrorActionPreference = 'Continue'
         $gh = $cfg.github
         Push-Location $NewsDir
+        # Clear a stale index.lock left by a previously crashed git (only if no git is running)
+        $lock = Join-Path $NewsDir '.git\index.lock'
+        if ((Test-Path $lock) -and -not (Get-Process -Name git -ErrorAction SilentlyContinue)) {
+            Remove-Item $lock -Force; Log "Removed stale git index.lock."
+        }
         git config core.autocrlf false 2>$null   # silence LF/CRLF warnings
         if (-not (Test-Path (Join-Path $NewsDir '.git'))) {
             Log "Initializing local git repo..."
@@ -157,10 +205,10 @@ if ($cfg -and $cfg.github -and $cfg.github.enabled) {
         $pushOut = (git push $authUrl main 2>&1 | Out-String) -replace [regex]::Escape($gh.token), '***'
         $pushOut | Tee-Object -FilePath $LogFile -Append | Out-Null
         if ($LASTEXITCODE -eq 0) { Log "GitHub push complete." }
-        else                     { Log "ERROR: git push failed (exit $LASTEXITCODE)." }
+        else                     { Add-Failure "git push failed (exit $LASTEXITCODE) - GitHub token may be expired or repo unreachable." }
         Pop-Location
     }
-    catch { Log "ERROR during GitHub publish: $_"; Pop-Location -ErrorAction SilentlyContinue }
+    catch { Add-Failure "GitHub publish crashed: $_"; Pop-Location -ErrorAction SilentlyContinue }
     finally { $ErrorActionPreference = 'Stop' }
 }
 else { Log "GitHub publish disabled (skipping)." }
@@ -230,9 +278,12 @@ if ($cfg -and $cfg.email -and $cfg.email.enabled) {
         $msg.Dispose(); $smtp.Dispose()
         Log "Email sent."
     }
-    catch { Log "ERROR sending email: $_" }
+    catch { Add-Failure "Newsletter email failed to send: $_" }
 }
 else { Log "Email disabled (skipping)." }
+
+# --- Alert on any collected failures ------------------------------------------
+if ($script:Failures.Count -gt 0) { Send-AlertEmail }
 
 # --- Prune old logs (keep last 20) ------------------------------------------
 Get-ChildItem $LogDir -Filter 'run_*.log' |
