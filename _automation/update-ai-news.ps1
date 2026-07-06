@@ -117,8 +117,12 @@ $body
 # --- 2. Publish to GitHub ----------------------------------------------------
 if ($cfg -and $cfg.github -and $cfg.github.enabled) {
     try {
+        # Git writes progress/warnings to stderr; under $ErrorActionPreference='Stop'
+        # PowerShell 5.1 turns those into terminating errors. Relax it for this block.
+        $ErrorActionPreference = 'Continue'
         $gh = $cfg.github
         Push-Location $NewsDir
+        git config core.autocrlf false 2>$null   # silence LF/CRLF warnings
         if (-not (Test-Path (Join-Path $NewsDir '.git'))) {
             Log "Initializing local git repo..."
             git init -b main 2>&1 | Out-Null
@@ -132,11 +136,14 @@ if ($cfg -and $cfg.github -and $cfg.github.enabled) {
         git add -A 2>&1 | Out-Null
         git commit -m "The AI Brief - issue $today" 2>&1 | Tee-Object -FilePath $LogFile -Append
         Log "Pushing to $remoteUrl ..."
-        git push $authUrl main 2>&1 | Tee-Object -FilePath $LogFile -Append
-        Log "GitHub push complete."
+        $pushOut = (git push $authUrl main 2>&1 | Out-String) -replace [regex]::Escape($gh.token), '***'
+        $pushOut | Tee-Object -FilePath $LogFile -Append | Out-Null
+        if ($LASTEXITCODE -eq 0) { Log "GitHub push complete." }
+        else                     { Log "ERROR: git push failed (exit $LASTEXITCODE)." }
         Pop-Location
     }
-    catch { Log "ERROR during GitHub publish: $_"; if((Get-Location).Path -ne $NewsDir){} ; Pop-Location -ErrorAction SilentlyContinue }
+    catch { Log "ERROR during GitHub publish: $_"; Pop-Location -ErrorAction SilentlyContinue }
+    finally { $ErrorActionPreference = 'Stop' }
 }
 else { Log "GitHub publish disabled (skipping)." }
 

@@ -18,6 +18,19 @@ Follow these steps exactly:
    - Notable business / market moves and product launches
    Prefer primary and reputable sources. Use WebFetch on a few of the most
    important sources to confirm specifics (numbers, dates, names).
+
+   SOURCE-DATE VERIFICATION (strict):
+   - Check the publication date of EVERY source before using it. Search results
+     often surface old articles for "latest news" queries.
+   - Only cite sources published within the last 7 days. Discard anything older —
+     even if it looks relevant — unless it is purely background for a story that
+     itself broke in the last 24-48h (and then say so, e.g. "announced in May").
+   - Never present an old story as if it happened today. If you cannot confirm
+     a source's date, do not use it.
+   - Rolling/undated news-aggregator pages (e.g. "latest AI news" landing pages)
+     may be used to discover stories, but verify each story against a dated
+     article before citing it.
+
    NOTE: some days are quiet. If there is little hard news, keep the issue SHORT —
    a few solid items is fine. Never pad, speculate, or invent stories to fill space.
 
