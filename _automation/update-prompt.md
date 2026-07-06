@@ -73,6 +73,12 @@ Follow these steps exactly:
 
    ---
 
+   ## 🧠 AI Fun Fact of the Day
+   > <one genuinely interesting, TRUE fact about AI — history, research quirks,
+   > surprising milestones, oddities. 1-3 sentences, engaging tone.>
+
+   ---
+
    ## 📚 Sources
    - [Title — Publisher](url)
    - ...
@@ -92,7 +98,18 @@ Follow these steps exactly:
    - Avoid repeating stories that already appeared in yesterday's issue unless
      there is a genuine new development.
 
-4. NAVIGATION FOOTER — the very last lines of the new issue file MUST be:
+4. FUN FACT — NO REPEATS (strict):
+   - Before writing the issue, READ `_automation/fun-facts-used.md`. It lists
+     every fun fact already used in past issues.
+   - Choose a fact that is NOT on that list — and not a paraphrase or close
+     variant of one either. Genuinely new territory each day.
+   - The fact must be TRUE and verifiable — a real event, paper, person, or
+     milestone. No urban legends; if unsure of a fact's accuracy, pick another.
+   - AFTER writing the issue, APPEND one line to `_automation/fun-facts-used.md`
+     in the format: `- <ISSUE-DATE>: <one-line summary of the fact>`.
+     Never delete or rewrite existing lines in that file.
+
+5. NAVIGATION FOOTER — the very last lines of the new issue file MUST be:
 
    ```
    ---
@@ -109,12 +126,12 @@ Follow these steps exactly:
    so readers can page forward through the archive. Do not duplicate the link if
    it is already there.
 
-5. Update `README.md` in this folder: add a link to the new issue at the TOP of
+6. Update `README.md` in this folder: add a link to the new issue at the TOP of
    the "Latest issues" list, in the form
    `- [<Month D, YYYY> — Issue No. <N>](<ISSUE-DATE>-ai-news.md)`.
    Keep all prior links.
 
-6. If a file for today's date already exists, overwrite it with the fresh version
+7. If a file for today's date already exists, overwrite it with the fresh version
    rather than creating a duplicate.
 
 Do not ask for confirmation — complete the whole task autonomously and finish by
