@@ -11,7 +11,9 @@
     Each is skipped unless its "enabled" flag is true and its credentials are set.
 
     Run manually:   powershell -ExecutionPolicy Bypass -File "<path>\update-ai-news.ps1"
+    Force a re-run for today (ignores the already-published check):  add -Force
 #>
+param([switch]$Force)
 
 $ErrorActionPreference = 'Stop'
 
@@ -30,8 +32,16 @@ function Log($msg) {
     "[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] $msg" | Tee-Object -FilePath $LogFile -Append
 }
 
-Log "=== The AI Brief weekly pipeline starting ==="
+Log "=== The AI Brief daily pipeline starting ==="
 Log "News dir: $NewsDir"
+
+# --- Skip if today's issue was already published (makes logon-trigger safe) ---
+$StampFile = Join-Path $ScriptDir 'last-success.txt'
+$TodayStr  = Get-Date -Format 'yyyy-MM-dd'
+if (-not $Force -and (Test-Path $StampFile) -and ((Get-Content $StampFile -Raw).Trim() -eq $TodayStr)) {
+    Log "Already published today ($TodayStr) - nothing to do. Use -Force to regenerate."
+    exit 0
+}
 
 # --- Load optional config ----------------------------------------------------
 $cfg = $null
@@ -282,8 +292,9 @@ if ($cfg -and $cfg.email -and $cfg.email.enabled) {
 }
 else { Log "Email disabled (skipping)." }
 
-# --- Alert on any collected failures ------------------------------------------
+# --- Alert on any collected failures; stamp success otherwise -----------------
 if ($script:Failures.Count -gt 0) { Send-AlertEmail }
+else { $TodayStr | Out-File $StampFile -Encoding ascii; Log "Success stamped for $TodayStr." }
 
 # --- Prune old logs (keep last 20) ------------------------------------------
 Get-ChildItem $LogDir -Filter 'run_*.log' |

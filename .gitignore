@@ -1,3 +1,4 @@
 # Never publish secrets or run logs
 _automation/config.local.json
 _automation/logs/
+_automation/last-success.txt
