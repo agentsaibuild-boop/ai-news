@@ -19,6 +19,13 @@ Follow these steps exactly:
    published publicly) — refer to them by their function instead, e.g. "your
    autonomous coding pipeline" rather than the repo name. Public repos may be
    named freely.
+   KNOWN CONTEXT (facts the repo files don't spell out):
+   - The "G1 robot" in the voice-assistant project is the **Unitree G1 humanoid
+     robot** — news about Unitree (funding, IPO, hardware, SDK) is directly
+     relevant to that project.
+   - The reader operates in the **Bulgarian/EU market** — EU AI Act obligations,
+     EU-language model support, and Bulgarian-language AI capabilities are
+     always relevant.
 
 3. Use WebSearch (several queries) to find the biggest AI stories of the last day.
    Cover these angles, but only include what genuinely happened in the last ~24-48h:
