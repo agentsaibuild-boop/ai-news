@@ -113,10 +113,25 @@ if ($cfg -and $cfg.github -and $cfg.github.token) {
         $headers = @{ Authorization = "token $($cfg.github.token)"; 'User-Agent' = 'ai-news-bot' }
         $repos = Invoke-RestMethod -Uri "https://api.github.com/user/repos?per_page=100&sort=updated" -Headers $headers
         $lines = @("# Reader's GitHub projects (auto-generated $(Get-Date -Format 'yyyy-MM-dd'), git-ignored)", "")
+        $rawHeaders = @{ Authorization = "token $($cfg.github.token)"; 'User-Agent' = 'ai-news-bot'; Accept = 'application/vnd.github.raw' }
         foreach ($r in $repos) {
             $vis = if ($r.private) { 'PRIVATE' } else { 'public' }
             $desc = if ($r.description) { $r.description } else { '(no description)' }
             $lines += "- $($r.name) [$vis, $($r.language)]: $desc"
+            # Include the README's opening lines - descriptions alone miss what projects really do
+            try {
+                $readme = $null
+                try { $readme = Invoke-RestMethod -Uri "https://api.github.com/repos/$($r.full_name)/readme" -Headers $rawHeaders }
+                catch {
+                    # Fallback: non-standard names like README_bg.md that the readme API misses
+                    $items = Invoke-RestMethod -Uri "https://api.github.com/repos/$($r.full_name)/contents/" -Headers $headers
+                    $alt = $items | Where-Object { $_.name -match '^README' } | Select-Object -First 1
+                    if ($alt) { $readme = Invoke-RestMethod -Uri $alt.download_url -Headers $rawHeaders }
+                }
+                $head = ($readme -split "`n" | Where-Object { $_.Trim() -and $_ -notmatch '^#' } | Select-Object -First 3) -join ' '
+                if ($head.Length -gt 400) { $head = $head.Substring(0, 400) + '...' }
+                if ($head) { $lines += "    README: $head" }
+            } catch { }
         }
         $lines -join "`n" | Out-File (Join-Path $ScriptDir 'github-projects.md') -Encoding utf8
         Log "Refreshed GitHub project profile ($($repos.Count) repos)."
