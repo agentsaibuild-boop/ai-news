@@ -144,7 +144,11 @@ $Prompt = Get-Content -Raw -Path $PromptFile -Encoding UTF8
 Push-Location $NewsDir
 try {
     Log "Launching Claude (headless) to write this week's issue..."
-    & $ClaudeExe --print $Prompt `
+    # Prompt goes via stdin: PS 5.1 does not escape embedded double quotes when
+    # building native command lines, so passing $Prompt as an argument truncates
+    # it at the first " (e.g. **"The AI Brief"**).
+    $OutputEncoding = [System.Text.Encoding]::UTF8
+    $Prompt | & $ClaudeExe --print `
         --permission-mode bypassPermissions `
         --allowedTools 'WebSearch,WebFetch,Read,Write,Edit,Glob,Grep' 2>&1 |
         Tee-Object -FilePath $LogFile -Append

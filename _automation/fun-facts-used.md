@@ -7,3 +7,4 @@
 - 2026-07-08: Weizenbaum's 1966 ELIZA chatbot fooled users into confiding in it — his own secretary asked him to leave the room to chat privately — origin of the "ELIZA effect."
 - 2026-07-13: The 1956 Logic Theorist found a proof more elegant than Russell's for Principia Mathematica theorem 2.85, but the Journal of Symbolic Logic declined the paper listing the program as co-author.
 - 2026-07-13: Four-color theorem (1976, Appel & Haken) was the first major computer-assisted proof (~1,200 hours of machine time); Illinois math dept franked mail "FOUR COLORS SUFFICE". (Replaced Logic Theorist fact when the issue was regenerated.)
+- 2026-07-13: 1958 Perceptron demo — US Navy predicted it would "walk, talk, see, write, reproduce itself and be conscious of its existence," printed straight by the NYT. (Replaced four-color fact on second regeneration.)
