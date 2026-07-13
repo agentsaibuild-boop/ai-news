@@ -8,7 +8,19 @@ Follow these steps exactly:
    the issue number by counting existing `*-ai-news.md` files in this folder and
    adding 1 (read the folder first). The first issue is No. 1.
 
-2. Use WebSearch (several queries) to find the biggest AI stories of the last day.
+2. READER RELEVANCE: read `_automation/github-projects.md` — it lists the
+   reader's actual GitHub projects (auto-refreshed daily). Use it two ways:
+   a) As a lens when choosing among stories of similar weight, prefer ones that
+      touch the reader's domains (e.g. coding agents & multi-agent pipelines,
+      document AI / OCR / structured extraction, voice assistants, Python/FastAPI
+      tooling, LLM APIs & pricing, EU AI regulation).
+   b) To fill the dedicated "For Your Projects" section described below.
+   PRIVACY: repos marked [PRIVATE] must not be named in the newsletter (it is
+   published publicly) — refer to them by their function instead, e.g. "your
+   autonomous coding pipeline" rather than the repo name. Public repos may be
+   named freely.
+
+3. Use WebSearch (several queries) to find the biggest AI stories of the last day.
    Cover these angles, but only include what genuinely happened in the last ~24-48h:
    - New model releases & capability milestones (OpenAI, Anthropic, Google,
      Meta, xAI, Chinese labs, open-weight models)
@@ -34,7 +46,7 @@ Follow these steps exactly:
    NOTE: some days are quiet. If there is little hard news, keep the issue SHORT —
    a few solid items is fine. Never pad, speculate, or invent stories to fill space.
 
-3. Read the most recent existing `*-ai-news.md` issue in this folder to match its
+4. Read the most recent existing `*-ai-news.md` issue in this folder to match its
    NEWSLETTER structure exactly, then write a new file named
    `<ISSUE-DATE>-ai-news.md`. It MUST follow this newsletter layout:
 
@@ -68,6 +80,16 @@ Follow these steps exactly:
    ## 💼 Business & Market
    - ...
 
+   ## 🎯 For Your Projects
+   - **<Project or domain>:** <why today's story X matters to it, one or two
+     sentences, with the source link. 2-4 bullets max. Only include items with a
+     GENUINE, specific connection to the reader's projects (from
+     `_automation/github-projects.md`) — e.g. a new document-extraction model for
+     the invoice-OCR tool, agent-orchestration research for the coding pipeline,
+     a speech-model release for the voice assistant, EU AI Act changes for
+     EU-market tools. If nothing today truly connects, OMIT this section — never
+     stretch a story to fit. Respect the privacy rule from step 2.>
+
    ## ⚡ Quick Hits
    - <one-line items that are notable but don't need a full paragraph>
 
@@ -98,7 +120,7 @@ Follow these steps exactly:
    - Avoid repeating stories that already appeared in yesterday's issue unless
      there is a genuine new development.
 
-4. FUN FACT — NO REPEATS (strict):
+5. FUN FACT — NO REPEATS (strict):
    - Before writing the issue, READ `_automation/fun-facts-used.md`. It lists
      every fun fact already used in past issues.
    - Choose a fact that is NOT on that list — and not a paraphrase or close
@@ -109,7 +131,7 @@ Follow these steps exactly:
      in the format: `- <ISSUE-DATE>: <one-line summary of the fact>`.
      Never delete or rewrite existing lines in that file.
 
-5. NAVIGATION FOOTER — the very last lines of the new issue file MUST be:
+6. NAVIGATION FOOTER — the very last lines of the new issue file MUST be:
 
    ```
    ---
@@ -126,12 +148,12 @@ Follow these steps exactly:
    so readers can page forward through the archive. Do not duplicate the link if
    it is already there.
 
-6. Update `README.md` in this folder: add a link to the new issue at the TOP of
+7. Update `README.md` in this folder: add a link to the new issue at the TOP of
    the "Latest issues" list, in the form
    `- [<Month D, YYYY> — Issue No. <N>](<ISSUE-DATE>-ai-news.md)`.
    Keep all prior links.
 
-7. If a file for today's date already exists, overwrite it with the fresh version
+8. If a file for today's date already exists, overwrite it with the fresh version
    rather than creating a duplicate.
 
 Do not ask for confirmation — complete the whole task autonomously and finish by

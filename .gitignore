@@ -2,3 +2,4 @@
 _automation/config.local.json
 _automation/logs/
 _automation/last-success.txt
+_automation/github-projects.md

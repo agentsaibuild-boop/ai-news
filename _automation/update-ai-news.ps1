@@ -107,6 +107,23 @@ if (-not $ClaudeExe)          { Add-Failure "Could not locate claude.exe (was Cl
 if (-not (Test-Path $PromptFile)) { Add-Failure "Prompt file not found: $PromptFile"; Send-AlertEmail; exit 1 }
 Log "Using Claude binary: $ClaudeExe"
 
+# --- 0. Refresh the reader's GitHub project profile (drives story relevance) --
+if ($cfg -and $cfg.github -and $cfg.github.token) {
+    try {
+        $headers = @{ Authorization = "token $($cfg.github.token)"; 'User-Agent' = 'ai-news-bot' }
+        $repos = Invoke-RestMethod -Uri "https://api.github.com/user/repos?per_page=100&sort=updated" -Headers $headers
+        $lines = @("# Reader's GitHub projects (auto-generated $(Get-Date -Format 'yyyy-MM-dd'), git-ignored)", "")
+        foreach ($r in $repos) {
+            $vis = if ($r.private) { 'PRIVATE' } else { 'public' }
+            $desc = if ($r.description) { $r.description } else { '(no description)' }
+            $lines += "- $($r.name) [$vis, $($r.language)]: $desc"
+        }
+        $lines -join "`n" | Out-File (Join-Path $ScriptDir 'github-projects.md') -Encoding utf8
+        Log "Refreshed GitHub project profile ($($repos.Count) repos)."
+    }
+    catch { Log "WARNING: could not refresh GitHub project profile: $_ (using previous version if present)" }
+}
+
 # --- 1. Generate the newsletter ---------------------------------------------
 $Prompt = Get-Content -Raw -Path $PromptFile -Encoding UTF8
 Push-Location $NewsDir
