@@ -9,3 +9,4 @@
 - 2026-07-13: Four-color theorem (1976, Appel & Haken) was the first major computer-assisted proof (~1,200 hours of machine time); Illinois math dept franked mail "FOUR COLORS SUFFICE". (Replaced Logic Theorist fact when the issue was regenerated.)
 - 2026-07-13: 1958 Perceptron demo — US Navy predicted it would "walk, talk, see, write, reproduce itself and be conscious of its existence," printed straight by the NYT. (Replaced four-color fact on second regeneration.)
 - 2026-07-14: The Mechanical Turk (1770) chess "automaton" that beat Napoleon and Franklin was a hoax with a hidden human chess master; Amazon later named its crowdsourcing platform after it — "artificial artificial intelligence."
+- 2026-07-15: July 1979, Monte Carlo — Hans Berliner's BKG 9.8 beat backgammon world champion Luigi Villa 7–1, the first program to defeat a reigning human world champion at any game; Berliner conceded it also got luckier dice.
