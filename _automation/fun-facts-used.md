@@ -12,3 +12,4 @@
 - 2026-07-15: July 1979, Monte Carlo — Hans Berliner's BKG 9.8 beat backgammon world champion Luigi Villa 7–1, the first program to defeat a reigning human world champion at any game; Berliner conceded it also got luckier dice.
 - 2026-07-20: Lee Sedol's move 78 ("Hand of God") in Game 4 vs AlphaGo (2016) — the only human win against AlphaGo in formal play, a move AlphaGo rated 1-in-10,000 for a human to choose; Lee retired in 2019 saying AI "cannot be defeated."
 - 2026-07-21: Andrey Markov (1913) hand-counted 20,000 letters of Pushkin's Eugene Onegin to prove dependent events could be analyzed statistically — Markov chains, the pen-and-paper ancestor of next-token prediction in modern language models.
+- 2026-07-22: Claude Shannon's Theseus (1950) — a maze-solving magnetic mouse whose relay "brain" lived under the maze floor, one of the first machine-learning devices; it could be made to relearn by rearranging the walls.
