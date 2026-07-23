@@ -13,3 +13,4 @@
 - 2026-07-20: Lee Sedol's move 78 ("Hand of God") in Game 4 vs AlphaGo (2016) — the only human win against AlphaGo in formal play, a move AlphaGo rated 1-in-10,000 for a human to choose; Lee retired in 2019 saying AI "cannot be defeated."
 - 2026-07-21: Andrey Markov (1913) hand-counted 20,000 letters of Pushkin's Eugene Onegin to prove dependent events could be analyzed statistically — Markov chains, the pen-and-paper ancestor of next-token prediction in modern language models.
 - 2026-07-22: Claude Shannon's Theseus (1950) — a maze-solving magnetic mouse whose relay "brain" lived under the maze floor, one of the first machine-learning devices; it could be made to relearn by rearranging the walls.
+- 2026-07-23: MIT's 1966 "Summer Vision Project" — Seymour Papert assigned solving computer vision to students as a one-summer task; the famous underestimate took closer to fifty years.
