@@ -14,3 +14,4 @@
 - 2026-07-21: Andrey Markov (1913) hand-counted 20,000 letters of Pushkin's Eugene Onegin to prove dependent events could be analyzed statistically — Markov chains, the pen-and-paper ancestor of next-token prediction in modern language models.
 - 2026-07-22: Claude Shannon's Theseus (1950) — a maze-solving magnetic mouse whose relay "brain" lived under the maze floor, one of the first machine-learning devices; it could be made to relearn by rearranging the walls.
 - 2026-07-23: MIT's 1966 "Summer Vision Project" — Seymour Papert assigned solving computer vision to students as a one-summer task; the famous underestimate took closer to fifty years.
+- 2026-07-27: Georgetown–IBM experiment (Jan 7, 1954) — IBM 701 translated 60+ Russian sentences with 6 grammar rules and a 250-word vocabulary; researchers predicted MT solved in 3–5 years, until the 1966 ALPAC report froze US funding.
