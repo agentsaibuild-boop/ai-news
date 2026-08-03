@@ -17,3 +17,4 @@
 - 2026-07-27: Georgetown–IBM experiment (Jan 7, 1954) — IBM 701 translated 60+ Russian sentences with 6 grammar rules and a 250-word vocabulary; researchers predicted MT solved in 3–5 years, until the 1966 ALPAC report froze US funding.
 - 2026-07-28: NASA's Remote Agent (May 1999) — first AI planner to command a spacecraft, running Deep Space 1 for ~2 days 60M miles from Earth; a deadlock bug froze it mid-flight and finding it in real flight was counted as the experiment's success.
 - 2026-07-29: SNARC (1951) — Minsky & Edmonds built the first neural-network learning machine from ~3,000 vacuum tubes and a B-24 bomber's gyropilot; its 40 random synapses learned a simulated rat maze and kept learning even as parts failed.
+- 2026-08-03: Turochamp (1948) — Turing & Champernowne's chess program predated any computer able to run it; Turing executed it by hand (~30 min/move) as a "paper machine," losing to Alick Glennie in 29 moves in 1952.
