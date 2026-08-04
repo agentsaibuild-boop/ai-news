@@ -18,3 +18,4 @@
 - 2026-07-28: NASA's Remote Agent (May 1999) — first AI planner to command a spacecraft, running Deep Space 1 for ~2 days 60M miles from Earth; a deadlock bug froze it mid-flight and finding it in real flight was counted as the experiment's success.
 - 2026-07-29: SNARC (1951) — Minsky & Edmonds built the first neural-network learning machine from ~3,000 vacuum tubes and a B-24 bomber's gyropilot; its 40 random synapses learned a simulated rat maze and kept learning even as parts failed.
 - 2026-08-03: Turochamp (1948) — Turing & Champernowne's chess program predated any computer able to run it; Turing executed it by hand (~30 min/move) as a "paper machine," losing to Alick Glennie in 29 moves in 1952.
+- 2026-08-04: Stanford Cart (1979) — Hans Moravec's camera-guided robot crossed a chair-filled room autonomously in ~5 hours, pausing 10–15 minutes after each 1-meter move to process images and re-plan.
