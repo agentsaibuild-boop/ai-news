@@ -20,3 +20,4 @@
 - 2026-08-03: Turochamp (1948) — Turing & Champernowne's chess program predated any computer able to run it; Turing executed it by hand (~30 min/move) as a "paper machine," losing to Alick Glennie in 29 moves in 1952.
 - 2026-08-04: Stanford Cart (1979) — Hans Moravec's camera-guided robot crossed a chair-filled room autonomously in ~5 hours, pausing 10–15 minutes after each 1-meter move to process images and re-plan.
 - 2026-08-05: Arthur Samuel's self-play checkers program — demonstrated on live US TV Feb 24, 1956, lifting IBM stock 15 points overnight; Samuel coined "machine learning" in his 1959 paper about it.
+- 2026-08-10: Christopher Strachey's 1952 love-letter generator on Manchester's Ferranti Mark 1 — randomized love letters signed "M.U.C." pinned to the lab notice board, the first known computer-generated text.
