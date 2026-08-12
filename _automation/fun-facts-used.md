@@ -22,3 +22,4 @@
 - 2026-08-05: Arthur Samuel's self-play checkers program — demonstrated on live US TV Feb 24, 1956, lifting IBM stock 15 points overnight; Samuel coined "machine learning" in his 1959 paper about it.
 - 2026-08-10: Christopher Strachey's 1952 love-letter generator on Manchester's Ferranti Mark 1 — randomized love letters signed "M.U.C." pinned to the lab notice board, the first known computer-generated text.
 - 2026-08-11: AlexNet (2012) was trained on two consumer GTX 580 gaming GPUs (3 GB each) on a PC in Alex Krizhevsky's bedroom at his parents' house — the run that ignited the deep-learning era.
+- 2026-08-12: Shakey the Robot (SRI, 1966–1972) — first mobile robot to reason about its actions, named after its own wobble; the A* pathfinding algorithm was invented for it and still powers video-game navigation.
