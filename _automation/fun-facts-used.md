@@ -23,3 +23,4 @@
 - 2026-08-10: Christopher Strachey's 1952 love-letter generator on Manchester's Ferranti Mark 1 — randomized love letters signed "M.U.C." pinned to the lab notice board, the first known computer-generated text.
 - 2026-08-11: AlexNet (2012) was trained on two consumer GTX 580 gaming GPUs (3 GB each) on a PC in Alex Krizhevsky's bedroom at his parents' house — the run that ignited the deep-learning era.
 - 2026-08-12: Shakey the Robot (SRI, 1966–1972) — first mobile robot to reason about its actions, named after its own wobble; the A* pathfinding algorithm was invented for it and still powers video-game navigation.
+- 2026-08-18: The word "robot" — Karel Čapek planned to call the artificial workers in R.U.R. (1920) "laboři"; his brother Josef, a painter, suggested "roboti" from Czech robota (forced labor), and the word spread worldwide within a decade.
