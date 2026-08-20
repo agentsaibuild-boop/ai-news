@@ -25,3 +25,4 @@
 - 2026-08-12: Shakey the Robot (SRI, 1966–1972) — first mobile robot to reason about its actions, named after its own wobble; the A* pathfinding algorithm was invented for it and still powers video-game navigation.
 - 2026-08-18: The word "robot" — Karel Čapek planned to call the artificial workers in R.U.R. (1920) "laboři"; his brother Josef, a painter, suggested "roboti" from Czech robota (forced labor), and the word spread worldwide within a decade.
 - 2026-08-19: IBM Watson's Final Jeopardy flub (Feb 2011) — answered "What is Toronto?????" under the category "U.S. Cities," but its low-confidence $947 wager meant it still beat Jennings and Rutter comfortably.
+- 2026-08-20: Stanford's MYCIN expert system (1970s) outperformed Stanford's own infectious-disease faculty in a blinded 1979 JAMA evaluation (65% acceptable recommendations vs 42.5–62.5%) yet was never used on a real patient due to liability questions and clunky terminal sessions.

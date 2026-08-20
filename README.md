@@ -6,6 +6,7 @@ publishes it to **GitHub**, and **emails** it to you.
 
 ## Latest issues
 
+- [August 20, 2026 — Issue No. 22](2026-08-20-ai-news.md)
 - [August 19, 2026 — Issue No. 21](2026-08-19-ai-news.md)
 - [August 18, 2026 — Issue No. 20](2026-08-18-ai-news.md)
 - [August 12, 2026 — Issue No. 19](2026-08-12-ai-news.md)
